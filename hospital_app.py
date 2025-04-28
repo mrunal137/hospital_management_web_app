@@ -4,6 +4,7 @@ from datetime import datetime
 import hashlib
 import numpy as np  # Import numpy here
 import cv2  # type: ignore # Import OpenCV 
+import pandas as pd  # Import pandas for DataFrame display
 
 # Database setup
 def create_connection():
@@ -135,15 +136,45 @@ elif page == "Alarm System":
 
 elif page == "View Records":
     st.header("📑 Stored Records")
+    
+    # Create database connection and fetch patient records
     conn = create_connection()
     cursor = conn.cursor()
+
+    # Display patient records
+    st.subheader("Patient Records")
     cursor.execute("SELECT * FROM patients")
     patient_records = cursor.fetchall()
+
     if patient_records:
-        for record in patient_records:
-            st.write(record)
+        # Display the records as a dataframe for better visualization
+        patient_df = pd.DataFrame(patient_records, columns=["ID", "Name", "Age", "Gender", "Department", "Password", "Timestamp"])
+        st.dataframe(patient_df)
     else:
         st.warning("⚠️ No patient records available yet.")
+    
+    # Display equipment records
+    st.subheader("Equipment Records")
+    cursor.execute("SELECT * FROM equipment")
+    equipment_records = cursor.fetchall()
+
+    if equipment_records:
+        equipment_df = pd.DataFrame(equipment_records, columns=["ID", "Equipment Name", "Status", "Timestamp"])
+        st.dataframe(equipment_df)
+    else:
+        st.warning("⚠️ No equipment records available yet.")
+    
+    # Display referral records
+    st.subheader("Referral Records")
+    cursor.execute("SELECT * FROM referrals")
+    referral_records = cursor.fetchall()
+
+    if referral_records:
+        referral_df = pd.DataFrame(referral_records, columns=["ID", "Hospital Name", "Beds Available", "Ventilators Available", "Timestamp"])
+        st.dataframe(referral_df)
+    else:
+        st.warning("⚠️ No referral records available yet.")
+
     conn.close()
 
 elif page == "Image Processing":
