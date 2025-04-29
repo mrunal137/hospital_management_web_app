@@ -1,5 +1,4 @@
-streamlit
-pandas
-numpy
-opencv-python
-sqlite3
+streamlit==1.33.0
+pandas==2.2.2
+numpy==1.26.4
+opencv-python==4.9.0.80
