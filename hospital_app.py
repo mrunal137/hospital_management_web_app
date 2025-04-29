@@ -208,3 +208,8 @@ elif page == "Image Processing":
 
     else:
         st.info("📥 Please upload an image file to proceed.")
+
+        st.sidebar.subheader("Backup Database")
+with open('hospital_data.db', 'rb') as f:
+    st.sidebar.download_button('Download Backup', f, file_name='hospital_data_backup.db')
+
